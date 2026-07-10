@@ -43,26 +43,21 @@ body{
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
 }
-.app{max-width:880px;margin:0 auto;padding:32px 20px 80px;}
+.app{max-width:880px;margin:0 auto;padding:18px 20px 32px;}
 .ring-wrap svg, .workout-chart{max-width:100%;height:auto;display:block;}
 
-/* Header */
-.app-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;}
-.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
-.brand-mark{font-family:var(--font-display);font-size:34px;font-weight:600;letter-spacing:0.02em;color:var(--ink);}
-.brand-tag{font-size:13px;color:var(--ink-faint);font-style:italic;font-family:var(--font-display);}
-.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
-.today-badge{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);background:var(--paper-raised);border:1px solid var(--line);padding:6px 12px;border-radius:20px;white-space:nowrap;}
-.header-tools{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
-.tool-btn{
-  font-family:var(--font-mono);font-size:11.5px;color:var(--ink-soft);background:var(--paper-raised);
-  border:1px solid var(--line);padding:6px 11px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:5px;
-  transition:background .15s ease,color .15s ease;
+/* Compact header */
+.app-header-compact{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.brand-mark-sm{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:0.02em;color:var(--ink);}
+.icon-btn-header{
+  width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--paper-raised);
+  color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s ease;
 }
-.tool-btn:hover{background:var(--habit-soft);color:var(--ink);}
-.tool-btn:focus-visible{outline:2px solid var(--growth);outline-offset:2px;}
+.icon-btn-header svg{width:19px;height:19px;}
+.icon-btn-header:hover{background:var(--habit-soft);color:var(--ink);}
+.icon-btn-header:focus-visible{outline:2px solid var(--growth);outline-offset:2px;}
 
-/* Tabs */
+/* Tabs (desktop) */
 .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:28px;overflow-x:auto;}
 .tab-btn{
   font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--ink-faint);
@@ -72,6 +67,46 @@ body{
 .tab-btn:hover{color:var(--ink);}
 .tab-btn.active{color:var(--ink);border-bottom-color:var(--growth);}
 .tab-btn:focus-visible{outline:2px solid var(--growth);outline-offset:2px;}
+
+/* Bottom nav (mobile, app-style) */
+.bottom-nav{
+  display:none;position:fixed;left:0;right:0;bottom:0;background:var(--paper-raised);
+  border-top:1px solid var(--line);z-index:40;padding:4px 2px calc(4px + env(safe-area-inset-bottom));
+  box-shadow:0 -4px 14px rgba(38,51,43,.06);
+}
+.bottom-nav-inner{display:flex;justify-content:space-around;max-width:880px;margin:0 auto;}
+.bottom-nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;
+  color:var(--ink-faint);font-family:var(--font-body);font-size:9.5px;padding:6px 2px;cursor:pointer;
+  flex:1;min-width:0;border-radius:10px;transition:color .15s ease;
+}
+.bottom-nav-item svg{width:21px;height:21px;flex-shrink:0;}
+.bottom-nav-item.active{color:var(--growth);}
+.bottom-nav-item span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.bottom-nav-item:focus-visible{outline:2px solid var(--growth);outline-offset:-2px;}
+
+@media(max-width:720px){
+  .tabs{display:none;}
+  .bottom-nav{display:block;}
+  .app{padding-bottom:90px;}
+}
+
+/* Settings sheet */
+.sheet-overlay{position:fixed;inset:0;background:rgba(38,51,43,.35);display:flex;align-items:flex-end;justify-content:center;z-index:60;padding:0;}
+.sheet{background:var(--paper-raised);border-radius:20px 20px 0 0;padding:14px 22px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:480px;animation:sheetUp .25s ease;}
+@keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet-handle{width:36px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 14px;}
+.sheet-title{font-family:var(--font-display);font-size:19px;font-weight:600;margin:0 0 6px;}
+.sheet-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line-soft);gap:12px;}
+.sheet-row:last-child{border-bottom:none;}
+.sheet-row-label{font-size:14px;color:var(--ink);}
+.sheet-row-sub{font-size:11.5px;color:var(--ink-faint);font-family:var(--font-mono);}
+.sheet-row-name{font-size:14px;color:var(--ink);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline dotted;text-align:left;}
+@media(min-width:640px){
+  .sheet-overlay{align-items:center;padding:20px;}
+  .sheet{border-radius:16px;animation:fadeIn .2s ease;}
+  .sheet-handle{display:none;}
+}
 
 /* Cards */
 .card{background:var(--paper-raised);border:1px solid var(--line);border-radius:14px;padding:22px;}
@@ -323,19 +358,12 @@ body{
 @keyframes toastOut{from{opacity:1;}to{opacity:0;transform:translateY(8px);}}
 
 @media(max-width:520px){
-  .app{padding:20px 14px 60px;}
-  .brand-mark{font-size:28px;}
+  .app{padding:14px 14px 32px;}
   .nav-title{min-width:110px;font-size:16px;}
-  .header-right{align-items:flex-start;width:100%;}
-  .header-tools{justify-content:flex-start;}
   .card{padding:16px;}
   .stat-row{grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;}
   .badge-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:10px;}
   .modal{padding:20px;}
-}
-@media(max-width:360px){
-  .today-badge{font-size:10.5px;padding:5px 9px;}
-  .tool-btn{font-size:10.5px;padding:5px 9px;}
 }
 
 /* Auth screen */
@@ -348,7 +376,8 @@ body{
 .auth-switch{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:16px;}
 .auth-switch button{background:none;border:none;color:var(--growth);cursor:pointer;font-weight:600;font-size:13px;text-decoration:underline;padding:0;}
 .auth-loading{text-align:center;padding:60px 20px;color:var(--ink-faint);font-family:var(--font-mono);font-size:13px;}
-.user-email{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);}
+.user-email{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);transition:color .15s ease;}
+.user-email:hover{color:var(--growth);}
 .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--habit);margin-right:5px;}
 .field input[type=password],.field input[type=email]{
   width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);
@@ -477,6 +506,23 @@ const I18N = {
   logout:{zh:'登出', en:'Log out'},
   synced:{zh:'已同步', en:'Synced'},
   passwordTooShort:{zh:'密碼至少需要 6 個字元', en:'Password must be at least 6 characters'},
+  forgotPassword:{zh:'忘記密碼？', en:'Forgot password?'},
+  resetPasswordTitle:{zh:'重設密碼', en:'Reset password'},
+  sendResetLink:{zh:'寄送重設連結', en:'Send reset link'},
+  resetLinkSent:{zh:'重設密碼信已寄出，請至信箱點擊連結繼續。', en:"We've sent a reset link to your email. Click it to continue."},
+  backToLogin:{zh:'← 返回登入', en:'← Back to login'},
+  newPassword:{zh:'新密碼', en:'New password'},
+  setNewPasswordBtn:{zh:'設定新密碼', en:'Set new password'},
+  resetSuccess:{zh:'密碼已更新，請重新登入。', en:'Password updated. Please log in again.'},
+  editName:{zh:'編輯', en:'Edit'},
+  displayNameLabel:{zh:'顯示名稱', en:'Display name'},
+  displayNamePlaceholder:{zh:'例如：小明', en:'e.g. Alex'},
+  saveName:{zh:'儲存', en:'Save'},
+  settingsTitle:{zh:'設定', en:'Settings'},
+  todayLabel:{zh:'今天', en:'Today'},
+  languageLabel:{zh:'語言', en:'Language'},
+  dataLabel:{zh:'資料', en:'Data'},
+  accountLabel:{zh:'帳號', en:'Account'},
   tabWorkout:{zh:'訓練', en:'Workout'},
   weeklyPlan:{zh:'本週安排', en:'Weekly Plan'},
   restDay:{zh:'休息日', en:'Rest day'},
@@ -528,6 +574,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 let currentUserId = null;
 let currentUserEmail = null;
+let currentDisplayName = '';
 let authMode = 'login';
 let authError = '';
 let authNotice = '';
@@ -546,6 +593,8 @@ let viewMonthDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
 let viewYear = todayDate.getFullYear();
 let selectedDayKey = dateKey(todayDate);
 let modalState = null;
+let settingsOpen = false;
+let nameModalOpen = false;
 let achievementsUnlocked = {}; // {id: dateKey}
 let firstUseDate = null;
 let goalsEverCreatedCount = 0;
@@ -1048,6 +1097,23 @@ function activateOdometers(root){
   });
 }
 
+function navIcon(name){
+  const S = 'stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+  const paths = {
+    today: `<circle cx="12" cy="12" r="7.5" ${S}/><path d="M9 12l2 2 4-4" ${S}/>`,
+    month: `<rect x="4" y="5.5" width="16" height="14" rx="2.5" ${S}/><path d="M4 10h16" ${S}/><path d="M8 3.5v3M16 3.5v3" ${S}/>`,
+    year: `<circle cx="12" cy="12" r="3.2" ${S}/><circle cx="12" cy="12" r="6.4" ${S} opacity="0.6"/><circle cx="12" cy="12" r="9.4" ${S} opacity="0.35"/>`,
+    tasks: `<path d="M5 6.5h11M5 12h11M5 17.5h7" ${S}/><path d="M17.5 15l1.8 1.8L23 13" ${S}/>`,
+    workout: `<path d="M4 12h2M18 12h2" ${S}/><rect x="6" y="9" width="3" height="6" rx="1" ${S}/><rect x="15" y="9" width="3" height="6" rx="1" ${S}/><path d="M9 12h6" ${S}/>`,
+    achievements: `<path d="M12 3l2.3 4.8 5.2.7-3.8 3.7.9 5.3L12 15l-4.6 2.5.9-5.3-3.8-3.7 5.2-.7L12 3z" ${S}/>`,
+    manage: `<circle cx="7" cy="7" r="2" ${S}/><path d="M11 7h9" ${S}/><circle cx="16" cy="14" r="2" ${S}/><path d="M4 14h9" ${S}/><path d="M7 18h10" ${S}/>`
+  };
+  return `<svg viewBox="0 0 24 24">${paths[name]||''}</svg>`;
+}
+function gearIcon(){
+  return `<svg viewBox="0 0 24 24" fill="none"><path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" stroke="currentColor" stroke-width="1.6"/><path d="M19.9 14.6a1.7 1.7 0 00.34 1.87l.06.06a2.05 2.05 0 11-2.9 2.9l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1.03 1.56V21a2.05 2.05 0 01-4.1 0v-.1a1.7 1.7 0 00-1.1-1.54 1.7 1.7 0 00-1.87.34l-.06.06a2.05 2.05 0 11-2.9-2.9l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.56-1.03H2.9a2.05 2.05 0 010-4.1H3a1.7 1.7 0 001.54-1.1 1.7 1.7 0 00-.34-1.87l-.06-.06a2.05 2.05 0 112.9-2.9l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001.03-1.56V3a2.05 2.05 0 014.1 0v.1a1.7 1.7 0 001.03 1.56 1.7 1.7 0 001.87-.34l.06-.06a2.05 2.05 0 112.9 2.9l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.56 1.03h.1a2.05 2.05 0 010 4.1H21a1.7 1.7 0 00-1.1 1.47z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
+}
+
 function chevron(dir){
   const d = dir==='left' ? 'M9.5 3.5L5 8L9.5 12.5' : 'M6.5 3.5L11 8L6.5 12.5';
   return `<svg viewBox="0 0 16 16" fill="none" width="14" height="14"><path d="${d}" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -1204,7 +1270,7 @@ function anyPerfectMonthEver(){
   let y = earliest.getFullYear(), m = earliest.getMonth();
   while(y < todayDate.getFullYear() || (y===todayDate.getFullYear() && m<=todayDate.getMonth())){
     const ms = monthStats(y,m);
-    if(ms.completionRate===1 && ms.activeDays>0) return true;
+    if(ms.completionRate===1 && ms.activeDays===ms.daysElapsed && ms.activeDays>=5) return true;
     m++; if(m>11){ m=0; y++; }
   }
   return false;
@@ -1213,12 +1279,13 @@ function anyPerfectYearEver(){
   if(goals.length===0) return false;
   const earliestYear = goals.reduce((min,g)=> Math.min(min, createdMidnight(g).getFullYear()), todayDate.getFullYear());
   for(let y=earliestYear; y<=todayDate.getFullYear(); y++){
-    let totalDone=0, totalPossible=0;
+    let totalDone=0, totalPossible=0, activeDays=0, daysElapsed=0;
     for(let m=0;m<12;m++){
       const ms = monthStats(y,m);
       totalDone += ms.totalDone; totalPossible += ms.totalPossible;
+      activeDays += ms.activeDays; daysElapsed += ms.daysElapsed;
     }
-    if(totalPossible>0 && totalDone===totalPossible) return true;
+    if(totalPossible>0 && totalDone===totalPossible && activeDays===daysElapsed && activeDays>=30) return true;
   }
   return false;
 }
@@ -1301,27 +1368,19 @@ const TAB_ORDER = ['today','month','year','tasks','workout','achievements','mana
 function buildShell(){
   const app = document.getElementById('app');
   app.innerHTML = `
-    <div class="app-header">
-      <div class="brand">
-        <span class="brand-mark">年輪</span>
-        <span class="brand-tag" id="brand-tag-text"></span>
-      </div>
-      <div class="header-right">
-        <span class="today-badge" id="today-badge-text"></span>
-        <div class="header-tools">
-          <span class="tool-btn" style="cursor:default;"><span class="sync-dot"></span><span id="sync-label"></span></span>
-          <button class="tool-btn" id="lang-toggle"></button>
-          <button class="tool-btn" id="export-btn"></button>
-          <button class="tool-btn" id="import-btn"></button>
-          <button class="tool-btn" id="logout-btn"></button>
-        </div>
-        <span class="user-email" id="user-email-text"></span>
-      </div>
+    <div class="app-header-compact">
+      <span class="brand-mark-sm">年輪</span>
+      <button class="icon-btn-header" id="settings-btn" aria-label="settings">${gearIcon()}</button>
     </div>
     <div class="tabs" id="tabs-row">
       ${TAB_ORDER.map(id=>`<button class="tab-btn" data-tab="${id}"></button>`).join('')}
     </div>
     <div class="tab-panel" id="panel"></div>
+    <nav class="bottom-nav">
+      <div class="bottom-nav-inner" id="bottom-nav-row">
+        ${TAB_ORDER.map(id=>`<button class="bottom-nav-item" data-tab="${id}">${navIcon(id)}<span></span></button>`).join('')}
+      </div>
+    </nav>
   `;
   appShellBuilt = true;
 }
@@ -1329,6 +1388,8 @@ function buildShell(){
 function render(){
   const existingOverlay = document.getElementById('modal-overlay');
   if(existingOverlay) existingOverlay.remove();
+  const existingSheet = document.getElementById('sheet-overlay');
+  if(existingSheet) existingSheet.remove();
 
   const app = document.getElementById('app');
   if(!currentUserId){
@@ -1344,18 +1405,15 @@ function render(){
   }
   if(!appShellBuilt) buildShell();
 
-  document.getElementById('brand-tag-text').textContent = t('brandTag');
-  document.getElementById('today-badge-text').textContent = formatDateLabel(todayDate);
-  document.getElementById('sync-label').textContent = t('synced');
-  document.getElementById('lang-toggle').textContent = t('langToggle');
-  document.getElementById('export-btn').textContent = t('exportBtn');
-  document.getElementById('import-btn').textContent = t('importBtn');
-  document.getElementById('logout-btn').textContent = t('logout');
-  document.getElementById('user-email-text').textContent = currentUserEmail || '';
-
   document.querySelectorAll('#tabs-row .tab-btn').forEach(btn=>{
     const id = btn.dataset.tab;
     btn.textContent = t(TAB_LABEL_KEYS[id]);
+    btn.classList.toggle('active', currentTab===id);
+  });
+  document.querySelectorAll('#bottom-nav-row .bottom-nav-item').forEach(btn=>{
+    const id = btn.dataset.tab;
+    const label = btn.querySelector('span');
+    if(label) label.textContent = t(TAB_LABEL_KEYS[id]);
     btn.classList.toggle('active', currentTab===id);
   });
 
@@ -1370,22 +1428,113 @@ function render(){
 
   attachHandlers();
   if(modalState) renderModal();
+  if(nameModalOpen) renderNameModal();
+  if(settingsOpen) renderSettingsSheet();
   checkAchievements();
   activateOdometers(panel);
 }
 
+function renderSettingsSheet(){
+  const overlay = document.createElement('div');
+  overlay.className = 'sheet-overlay';
+  overlay.id = 'sheet-overlay';
+  overlay.innerHTML = `
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">${t('settingsTitle')}</div>
+      <div class="sheet-row">
+        <span class="sheet-row-label">${t('accountLabel')}</span>
+        <button class="sheet-row-name" id="sheet-edit-name">${escapeHtml(currentDisplayName || currentUserEmail || '')}</button>
+      </div>
+      <div class="sheet-row">
+        <span class="sheet-row-label"><span class="sync-dot"></span>${t('synced')}</span>
+        <span class="sheet-row-sub">${formatDateLabel(todayDate)}</span>
+      </div>
+      <div class="sheet-row">
+        <span class="sheet-row-label">${t('languageLabel')}</span>
+        <button class="btn small secondary" id="lang-toggle">${t('langToggle')}</button>
+      </div>
+      <div class="sheet-row">
+        <span class="sheet-row-label">${t('dataLabel')}</span>
+        <div class="btn-row">
+          <button class="btn small secondary" id="export-btn">${t('exportBtn')}</button>
+          <button class="btn small secondary" id="import-btn">${t('importBtn')}</button>
+        </div>
+      </div>
+      <div class="sheet-row">
+        <span class="sheet-row-label"></span>
+        <button class="btn small secondary" id="logout-btn">${t('logout')}</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) closeSettings(); });
+  document.getElementById('sheet-edit-name').onclick = ()=>{ closeSettings(); openNameModal(); };
+  const langBtn = document.getElementById('lang-toggle');
+  if(langBtn) langBtn.onclick = async ()=>{
+    lang = lang==='zh' ? 'en' : 'zh';
+    await saveSettings();
+    render();
+  };
+  const exportBtn = document.getElementById('export-btn');
+  if(exportBtn) exportBtn.onclick = exportData;
+  const importBtn = document.getElementById('import-btn');
+  if(importBtn) importBtn.onclick = triggerImport;
+  const logoutBtn = document.getElementById('logout-btn');
+  if(logoutBtn) logoutBtn.onclick = async ()=>{
+    unsubscribeRealtime();
+    await sb.auth.signOut();
+  };
+}
+function openSettings(){ settingsOpen = true; render(); }
+function closeSettings(){ settingsOpen = false; render(); }
+
 function renderAuthScreen(){
+  if(authMode==='reset'){
+    return `
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-brand">年輪</div>
+        <div class="auth-tag">${t('resetPasswordTitle')}</div>
+        ${authError ? `<div class="auth-error">${escapeHtml(authError)}</div>` : ''}
+        ${authNotice ? `<div class="auth-notice">${escapeHtml(authNotice)}</div>` : ''}
+        <div class="field">
+          <label>${t('newPassword')}</label>
+          <input type="password" id="auth-new-password" placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <button class="btn" id="auth-reset-submit" style="width:100%;" ${authBusy?'disabled':''}>${authBusy? t('loggingIn') : t('setNewPasswordBtn')}</button>
+      </div>
+    </div>`;
+  }
+  if(authMode==='forgot'){
+    return `
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-brand">年輪</div>
+        <div class="auth-tag">${t('resetPasswordTitle')}</div>
+        ${authError ? `<div class="auth-error">${escapeHtml(authError)}</div>` : ''}
+        ${authNotice ? `<div class="auth-notice">${escapeHtml(authNotice)}</div>` : ''}
+        <div class="field">
+          <label>${t('email')}</label>
+          <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <button class="btn" id="auth-forgot-submit" style="width:100%;" ${authBusy?'disabled':''}>${authBusy? t('loggingIn') : t('sendResetLink')}</button>
+        <div class="auth-switch">
+          <button id="auth-back-btn">${t('backToLogin')}</button>
+        </div>
+      </div>
+    </div>`;
+  }
   const isSignup = authMode==='signup';
   return `
   <div class="auth-wrap">
     <div class="auth-card">
       <div class="auth-brand">年輪</div>
-      <div class="auth-tag">${t('authTag')}</div>
       ${authError ? `<div class="auth-error">${escapeHtml(authError)}</div>` : ''}
       ${authNotice ? `<div class="auth-notice">${escapeHtml(authNotice)}</div>` : ''}
       <div class="field">
         <label>${t('email')}</label>
-        <input type="text" id="auth-email" placeholder="you@example.com" autocomplete="email">
+        <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
       </div>
       <div class="field">
         <label>${t('password')}</label>
@@ -1394,6 +1543,7 @@ function renderAuthScreen(){
       <button class="btn" id="auth-submit" style="width:100%;" ${authBusy?'disabled':''}>${authBusy? t('loggingIn') : (isSignup? t('signup') : t('login'))}</button>
       <div class="auth-switch">
         <button id="auth-switch-btn">${isSignup? t('haveAccount') : t('noAccountYet')}</button>
+        ${!isSignup ? `<div style="margin-top:8px;"><button id="auth-forgot-btn">${t('forgotPassword')}</button></div>` : ''}
       </div>
     </div>
   </div>`;
@@ -1405,6 +1555,50 @@ function attachAuthHandlers(){
     authMode = authMode==='signup' ? 'login' : 'signup';
     authError = ''; authNotice = '';
     render();
+  };
+  const forgotBtn = document.getElementById('auth-forgot-btn');
+  if(forgotBtn) forgotBtn.onclick = ()=>{
+    authMode = 'forgot'; authError=''; authNotice='';
+    render();
+  };
+  const backBtn = document.getElementById('auth-back-btn');
+  if(backBtn) backBtn.onclick = ()=>{
+    authMode = 'login'; authError=''; authNotice='';
+    render();
+  };
+  const forgotSubmit = document.getElementById('auth-forgot-submit');
+  if(forgotSubmit) forgotSubmit.onclick = async ()=>{
+    const email = document.getElementById('auth-email').value.trim();
+    authError = '';
+    if(!email){ authError = t('email'); render(); return; }
+    authBusy = true; render();
+    try{
+      const {error} = await sb.auth.resetPasswordForEmail(email, {redirectTo: window.location.href});
+      authBusy = false;
+      if(error){ authError = error.message; render(); return; }
+      authNotice = t('resetLinkSent');
+      render();
+    }catch(e){
+      authBusy = false; authError = String(e.message||e); render();
+    }
+  };
+  const resetSubmit = document.getElementById('auth-reset-submit');
+  if(resetSubmit) resetSubmit.onclick = async ()=>{
+    const pw = document.getElementById('auth-new-password').value;
+    authError = '';
+    if(pw.length < 6){ authError = t('passwordTooShort'); render(); return; }
+    authBusy = true; render();
+    try{
+      const {error} = await sb.auth.updateUser({password: pw});
+      authBusy = false;
+      if(error){ authError = error.message; render(); return; }
+      await sb.auth.signOut();
+      authMode = 'login';
+      authNotice = t('resetSuccess');
+      render();
+    }catch(e){
+      authBusy = false; authError = String(e.message||e); render();
+    }
   };
   const submitBtn = document.getElementById('auth-submit');
   if(submitBtn) submitBtn.onclick = async ()=>{
@@ -1947,6 +2141,46 @@ function openModal(goal){
 }
 function closeModal(){ modalState = null; render(); }
 
+function openNameModal(){
+  nameModalOpen = true;
+  render();
+  setTimeout(()=>{
+    const input = document.getElementById('name-input');
+    if(input){ input.value = currentDisplayName || ''; input.focus(); }
+  },0);
+}
+function closeNameModal(){ nameModalOpen = false; render(); }
+function renderNameModal(){
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h3>${t('displayNameLabel')}</h3>
+      <div class="field">
+        <label>${t('displayNameLabel')}</label>
+        <input type="text" id="name-input" placeholder="${t('displayNamePlaceholder')}" maxlength="30">
+      </div>
+      <div class="btn-row" style="margin-top:20px;justify-content:flex-end;">
+        <button class="btn secondary" id="name-modal-cancel">${t('cancel')}</button>
+        <button class="btn" id="name-modal-save">${t('saveName')}</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.getElementById('name-modal-cancel').onclick = closeNameModal;
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) closeNameModal(); });
+  document.getElementById('name-modal-save').onclick = async ()=>{
+    const name = document.getElementById('name-input').value.trim();
+    try{
+      const {error} = await sb.auth.updateUser({data:{display_name:name}});
+      if(error){ alert(error.message); return; }
+      currentDisplayName = name;
+      closeNameModal();
+    }catch(e){ alert(String(e.message||e)); }
+  };
+}
+
 function renderModal(){
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
@@ -2021,6 +2255,9 @@ function renderModal(){
 function attachHandlers(){
   document.querySelectorAll('.tab-btn').forEach(btn=>{
     btn.onclick = ()=>{ currentTab = btn.dataset.tab; render(); };
+  });
+  document.querySelectorAll('.bottom-nav-item').forEach(btn=>{
+    btn.onclick = ()=>{ currentTab = btn.dataset.tab; render(); window.scrollTo({top:0, behavior:'smooth'}); };
   });
   document.querySelectorAll('[data-toggle]').forEach(btn=>{
     btn.onclick = ()=>{
@@ -2120,23 +2357,8 @@ function attachHandlers(){
       render();
     };
   });
-  const langBtn = document.getElementById('lang-toggle');
-  if(langBtn){
-    langBtn.onclick = async ()=>{
-      lang = lang==='zh' ? 'en' : 'zh';
-      await saveSettings();
-      render();
-    };
-  }
-  const exportBtn = document.getElementById('export-btn');
-  if(exportBtn) exportBtn.onclick = exportData;
-  const importBtn = document.getElementById('import-btn');
-  if(importBtn) importBtn.onclick = triggerImport;
-  const logoutBtn = document.getElementById('logout-btn');
-  if(logoutBtn) logoutBtn.onclick = async ()=>{
-    unsubscribeRealtime();
-    await sb.auth.signOut();
-  };
+  const settingsBtn = document.getElementById('settings-btn');
+  if(settingsBtn) settingsBtn.onclick = openSettings;
 
   document.querySelectorAll('[data-add-exercise-for]').forEach(btn=>{
     btn.onclick = ()=>{ planEditWeekday = Number(btn.dataset.addExerciseFor); render();
@@ -2227,16 +2449,23 @@ document.getElementById('import-file-input').addEventListener('change', (e)=>{
 
 /* ---------- Auth bootstrap ---------- */
 sb.auth.onAuthStateChange((event, session)=>{
+  if(event === 'PASSWORD_RECOVERY'){
+    authMode = 'reset'; authError=''; authNotice='';
+    render();
+    return;
+  }
   if(session && session.user){
     const isNewLogin = currentUserId !== session.user.id;
     currentUserId = session.user.id;
     currentUserEmail = session.user.email;
+    currentDisplayName = (session.user.user_metadata && session.user.user_metadata.display_name) || '';
     authError = ''; authNotice = '';
-    if(isNewLogin) loadData();
+    if(isNewLogin && authMode!=='reset') loadData();
   } else {
     unsubscribeRealtime();
     currentUserId = null;
     currentUserEmail = null;
+    currentDisplayName = '';
     goals = []; completions = {}; tasks = []; workoutPlan = {}; workoutLogs = {};
     render();
   }
